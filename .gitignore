@@ -3,4 +3,4 @@
 
 .env
 
-compose.overrides.yaml
+compose.override.yaml
