@@ -2,3 +2,5 @@
 /.idea
 
 .env
+
+compose.overrides.yaml
