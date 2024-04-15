@@ -1,0 +1,5 @@
+
+services:
+  front:
+    command: bash -c "pnpm install --force && pnpm run dev --host --port=4173"
+    # command: sleep infinity
