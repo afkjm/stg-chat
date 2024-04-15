@@ -1,11 +1,22 @@
 
-version: '3.8'
-
 services:
 
   front:
     build: ./front
     ports:
-      - "${__front_ports}"
+      - "4173:4173"
 
+  postgres:
+    image: 'postgres:16.2'
+    environment:
+      POSTGRES_USER: stg
+      POSTGRES_PASSWORD: demonstration
+      POSTGRES_DB: stg
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
+  keydb:
+    image: eqalpha/keydb:x86_64_v6.3.4
+
+volumes:
+  pgdata:
