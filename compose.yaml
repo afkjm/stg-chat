@@ -7,6 +7,12 @@ services:
       # Change the port mapping on your local machine if necessary
       # For further information, see: https://docs.docker.com/compose/compose-file/compose-file-v3/#ports
       - "4173:4173"
+    volumes:
+      - ./front:/app
+
+    # for development use
+    # command: pnpm run dev
+
 
   postgres:
     image: 'postgres:16.2'
