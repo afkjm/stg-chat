@@ -4,6 +4,8 @@ services:
   front:
     build: ./front
     ports:
+      # Change the port mapping on your local machine if necessary
+      # For further information, see: https://docs.docker.com/compose/compose-file/compose-file-v3/#ports
       - "4173:4173"
 
   postgres:
