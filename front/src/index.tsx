@@ -1,6 +1,6 @@
 
 import { render } from 'preact'
-import { App } from './components/App.tsx'
+import { Channel } from './components/Channel.tsx'
 import './index.css'
 
-render(<App />, document.getElementById('App')!)
+render(<Channel />, document.getElementById('channel')!)
