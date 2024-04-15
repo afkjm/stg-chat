@@ -10,9 +10,6 @@ services:
     volumes:
       - ./front:/app
 
-    # for development use
-    # command: pnpm run dev
-
 
   postgres:
     image: 'postgres:16.2'
