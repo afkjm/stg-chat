@@ -25,3 +25,4 @@ dist-ssr
 
 # manually added from here 20240411
 /pnpm-lock.yaml
+.pnpm-store
