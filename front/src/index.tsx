@@ -1,6 +1,15 @@
 
 import { render } from 'preact'
-import { Channel } from './components/Channel.tsx'
+
 import './index.css'
 
-render(<Channel />, document.getElementById('channel')!)
+import { SocketContextProvider } from './contexts/SocketContext.tsx'
+import { Channel } from './components/Channel.tsx'
+
+
+render(
+  <SocketContextProvider>
+    <Channel />
+  </SocketContextProvider>,
+  document.getElementById('channel')!
+)
