@@ -11,6 +11,9 @@ const socket = io('ws://localhost:8080', {
 const SocketContext = createContext();
 
 export const SocketContextProvider =
-  ({children}) => <SocketContext.Provider value={socket} children={children} />
+  ({children}) => <SocketContext.Provider
+    value={socket}
+    children={children}
+  />
 
 export const useSocketContext = () => useContext(SocketContext)

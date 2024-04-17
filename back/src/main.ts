@@ -1,12 +1,15 @@
+
 import { NestFactory } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { SubscribeMessage, WebSocketGateway, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
+
 
 @WebSocketGateway({path: '/back/'})
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleConnection(client: any, ...args: any[]) {
     console.log('Client connected:', client.id);
   }
+
 
   handleDisconnect(client: any) {
     console.log('Client disconnected:', client.id);
@@ -17,6 +20,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     return 'Message received: ' + payload;
   }
 }
+
 
 @Module({
   providers: [ChatGateway],
