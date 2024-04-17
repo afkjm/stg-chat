@@ -1,34 +1,31 @@
 import { NestFactory } from '@nestjs/core';
 import { Module } from '@nestjs/common';
-import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import { SubscribeMessage, WebSocketGateway, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
 
+@WebSocketGateway({path: '/back/'})
+export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
+  handleConnection(client: any, ...args: any[]) {
+    console.log('Client connected:', client.id);
+  }
 
-// https://docs.nestjs.com/websockets/adapter#ws-library
+  handleDisconnect(client: any) {
+    console.log('Client disconnected:', client.id);
+  }
 
-
-// @WebSocketGateway({ path: '/back/' })
-@WebSocketGateway()
-export class ChatGateway {
-  @SubscribeMessage('message')
-  handleMessage(client: any, payload: any): string {
-    return 'chatgateway??';
+  @SubscribeMessage('msgToServer')
+  handleMessage(client: any, payload: string): string {
+    return 'Message received: ' + payload;
   }
 }
 
 @Module({
-  imports: [],
   providers: [ChatGateway],
 })
-export class AppModule {}
+class AppModule {}
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // app.enableCors({
-  //   origin: true,
-  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  //   credentials: true,
-  // });
-  // app.enableCors();
   await app.listen(3000);
 }
 bootstrap();

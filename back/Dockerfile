@@ -7,4 +7,4 @@ WORKDIR /app
 RUN pnpm install
 RUN pnpm build
 EXPOSE 4173
-CMD [ "pnpm", "run", "start:prod" ]
+CMD [ "pnpm", "run", "start:dev" ]
