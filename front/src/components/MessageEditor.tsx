@@ -7,7 +7,7 @@ import { useChannelContext } from '@/components/Channel/ChannelContext'
 
 import * as fragments from '@/fragments'
 import * as interfaces from '@/interfaces'
-import { say_help_no_channel } from "../fragments.tsx";
+
 
 const input = signal('');
 const action = signal<interfaces.Action>(null);
@@ -19,8 +19,10 @@ export function MessageEditor() {
 
   const onChange = useCallback(e => { input.value = e.target.value } )
   const appendMessage = useCallback(
-    message => channel.messages.value = [...channel.messages.value, <><hr />{message}</>]
+    message => channel.messages.value = [...channel.messages.value, <><hr />{message}</>],
+    []
   )
+  const formatMessage = useCallback((author, message) => <>{author}: {message}</>,[])
 
   useEffect(()=>{
     if (action.value) socket.emit(
@@ -30,7 +32,7 @@ export function MessageEditor() {
         if (response.response == 'success') {
           channel.channel.value = response.data.channel
           channel.messages.value = response.data.messages.map(
-            (m, i) => <><hr />{i > 0 ? `${m[0]}: `: ''}{m[1]}</>
+            (m, i) => <>{i > 0 ? formatMessage(m[0], m[1]) : m[1]}</>
           )
         }
       }
@@ -38,8 +40,8 @@ export function MessageEditor() {
   }, [action.value])
 
   useEffect(async ()=>{
-    await socket.on('message', what => {
-      console.log('message??? ', what)
+    await socket.on('message', data => {
+      appendMessage(formatMessage(data.author, data.message))
     })
   },[])
 
