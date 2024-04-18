@@ -7,6 +7,7 @@ import { useChannelContext } from '@/components/Channel/ChannelContext'
 
 import * as fragments from '@/fragments'
 import * as interfaces from '@/interfaces'
+import { say_help_no_channel } from "../fragments.tsx";
 
 const input = signal('');
 const action = signal<interfaces.Action>(null);
@@ -26,23 +27,37 @@ export function MessageEditor() {
       action.value.type,
       action.value.data,
       response => {
-        console.log(response)
+        if (response.response == 'success') {
+          channel.channel.value = response.data.channel
+          channel.messages.value = response.data.messages.map(
+            (m, i) => <><hr />{i > 0 ? `${m[0]}: `: ''}{m[1]}</>
+          )
+        }
       }
     )
   }, [action.value])
 
+  useEffect(async ()=>{
+    await socket.on('message', what => {
+      console.log('message??? ', what)
+    })
+  },[])
+
   const onSubmit = useCallback(e => {
     e.preventDefault();
-    const raw_input = String(input.value)  // make a copy for later reference
+    const raw_input = String(input.value).trim()  // make a copy for later reference
     const tokens: string[] = raw_input.split(/[\s]+/)
     input.value = ''
     if (!tokens || tokens.length == 0) return
 
     switch(tokens[0]) {
-      case '/help': appendMessage(fragments.help_text); break
+      case '/help':
+        appendMessage(fragments.help_text)
+        break
+
       case '/nick':
         // client-side nick validation for our purposes here
-        if (tokens.length !== 2 || !/^[a-z0-9]+$/.test(tokens[1])) {
+        if (tokens.length !== 2 || !/^[a-zA-Z0-9]+$/.test(tokens[1])) {
           appendMessage(fragments.nick_help)
           break
         }
@@ -53,6 +68,7 @@ export function MessageEditor() {
         break
 
       case '/join':
+        // validate our nick
         if (!channel.nick.value) {
           appendMessage(<>
             {fragments.join_help_no_nick}
@@ -60,35 +76,64 @@ export function MessageEditor() {
           </>)
           break
         }
-        if (tokens.length !== 2 || !/^#[a-z0-9]+$/.test(tokens[1])) {
+        // validate our channel
+        if (tokens.length !== 2 || !/^#[a-zA-Z0-9]+$/.test(tokens[1])) {
           appendMessage(fragments.join_help);
           break
         }
+        channel.channel.value = `${tokens[1]}`
+
         action.value = {
           type: tokens[0],  // /join
           data: {
-            'user': channel.nick.value,
-            'channel': tokens[1],
+            user: channel.nick.value,
+            channel: tokens[1],
           }
         }
 
         break
 
-      default: appendMessage(fragments.unknown_input); break
+      default:  // Handle `/say`
+        // you need to have some text to say something
+        if (!raw_input) break
+
+        // you need a nick to say something
+        if (!channel.nick.value) {
+          appendMessage(<>
+            {fragments.join_help_no_nick}
+            {fragments.nick_help}
+          </>)
+          break
+        }
+
+        if (!channel.channel.value) {
+          appendMessage(fragments.say_help_no_channel)
+          break
+        }
+
+        action.value = {
+          type: '/say',
+          data: {
+            author: channel.nick.value,
+            message: raw_input,
+          }
+        }
+
+        break
     }
 
   })
 
   return <form
-    className='justify-self-end min-h-7 text-center bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-white p-1'
+    className='justify-self-end text-center bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-white mb-1'
     onSubmit={onSubmit}
   >
     <input
-      className='w-full text-center bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-white'
+      className='w-full text-center bg-slate-200 dark:bg-slate-500 text-slate-700 dark:text-white'
       type='text'
       key='message-editor'
       value={input.value}
-      placeholder="/help <lists available commands>"
+      placeholder="<type here>"
       onChange={onChange}
     />
   </form>
