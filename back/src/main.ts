@@ -67,6 +67,10 @@ class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         // if the stream does exist, some other user already loaded it
       })
 
+      return {
+        response: 'success',
+        data: {stream_name},
+      }
     }
   }
 }

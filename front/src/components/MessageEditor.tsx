@@ -22,7 +22,13 @@ export function MessageEditor() {
   )
 
   useEffect(()=>{
-    if (action.value) socket.emit(action.value.type, action.value.data)
+    if (action.value) socket.emit(
+      action.value.type,
+      action.value.data,
+      response => {
+        console.log(response)
+      }
+    )
   }, [action.value])
 
   const onSubmit = useCallback(e => {
