@@ -1,7 +1,9 @@
 
 import { useMemo, useContext } from 'preact/hooks';
-import { useChannelContext } from './Channel/ChannelContext.tsx'
 import { useComputed, computed } from '@preact/signals'
+
+import { useChannelContext } from '@/components/Channel/ChannelContext.tsx'
+
 
 export function Messages() {
 

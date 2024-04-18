@@ -1,8 +1,9 @@
 
 import { signal } from '@preact/signals';
 import { useCallback, useContext } from 'preact/hooks';
-import { useSocketContext } from '../contexts/SocketContext.tsx'
-import { useChannelContext } from './Channel/ChannelContext.tsx'
+
+import { useSocketContext } from '@/contexts/SocketContext.tsx'
+import { useChannelContext } from '@/components/Channel/ChannelContext.tsx'
 
 
 const message = signal('');
