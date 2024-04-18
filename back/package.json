@@ -14,15 +14,18 @@
     "start:prod": "node dist/main"
   },
   "dependencies": {
+    "@nestjs-modules/ioredis": "2.0.2",
     "@nestjs/cli": "10.0.0",
     "@nestjs/common": "10.0.0",
     "@nestjs/core": "10.0.0",
+    "@nestjs/microservices": "10.3.7",
     "@nestjs/platform-express": "10.0.0",
     "@nestjs/platform-socket.io": "10.3.7",
     "@nestjs/websockets": "10.3.7",
-    "knex": "^3.1.0",
-    "nest-knexjs": "^0.0.22",
-    "pg": "^8.11.5",
+    "ioredis": "5.4.1",
+    "knex": "3.1.0",
+    "nest-knexjs": "0.0.22",
+    "pg": "8.11.5",
     "rxjs": "7.8.1",
     "sequelize": "6.37.3"
   },

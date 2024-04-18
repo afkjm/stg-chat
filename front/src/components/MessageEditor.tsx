@@ -45,6 +45,7 @@ export function MessageEditor() {
         channel.nick.value = tokens[1]
         appendMessage(fragments.set_nick(channel.nick.value))
         break
+
       case '/join':
         if (!channel.nick.value) {
           appendMessage(<>
@@ -59,10 +60,14 @@ export function MessageEditor() {
         }
         action.value = {
           type: tokens[0],  // /join
-          data: {'channel': tokens[1]}
+          data: {
+            'user': channel.nick.value,
+            'channel': tokens[1],
+          }
         }
 
         break
+
       default: appendMessage(fragments.unknown_input); break
     }
 
