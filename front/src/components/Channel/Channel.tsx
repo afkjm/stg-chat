@@ -1,7 +1,7 @@
 
-import { Messages } from '@/components/Messages.tsx'
-import { MessageEditor } from '@/components/MessageEditor.tsx'
-import { ChannelContextProvider } from '@/components/Channel/ChannelContext.tsx'
+import { Messages } from '@/components/Messages'
+import { MessageEditor } from '@/components/MessageEditor'
+import { ChannelContextProvider } from '@/components/Channel/ChannelContext'
 
 
 export const Channel = () =>

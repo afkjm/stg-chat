@@ -3,15 +3,13 @@ import { createContext } from 'preact'
 import { useContext } from 'preact/hooks'
 import { signal } from '@preact/signals'
 
+import * as fragments from '@/fragments'
+
 export const ChannelContext = createContext();
 
-const nick = signal('')
+const nick = signal('asdf')
 const messages = signal([
-  <>
-    <b>STG-CHAT v0.0.0</b><br />
-    <code>{'/nick <nick>'}</code> -- Set a nickname (mandatory)<br />
-    <code>{'/join <channel name>'}</code> -- Join a channel (mandatory)<br />
-  </>
+  fragments.help_text,
 ])
 
 export function  ChannelContextProvider({children}) {
