@@ -1,10 +1,10 @@
 
 import { render } from 'preact'
 
-import './index.css'
+import '@/index.css'
 
-import { SocketContextProvider } from './contexts/SocketContext.tsx'
-import { Channel } from './components/Channel.tsx'
+import { SocketContextProvider } from '@/contexts/SocketContext'
+import { Channel } from '@/components/Channel/Channel'
 
 
 render(
