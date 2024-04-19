@@ -19,7 +19,7 @@ export function MessageEditor() {
 
   const onChange = useCallback(e => { input.value = e.target.value } )
   const appendMessage = useCallback(
-    message => channel.messages.value = [...channel.messages.value, <><hr />{message}</>],
+    message => channel.messages.value = [...channel.messages.value, <>{message}</>],
     []
   )
   const formatMessage = useCallback((author, message) => <>{author}: {message}</>,[])
@@ -31,9 +31,12 @@ export function MessageEditor() {
       response => {
         if (response.response == 'success') {
           channel.channel.value = response.data.channel
-          channel.messages.value = response.data.messages.map(
+          const messages = response.data.messages.map(
             (m, i) => <>{i > 0 ? formatMessage(m[0], m[1]) : m[1]}</>
           )
+          // add one more message indicating how many users are actively connected
+          messages.push(fragments.n_users_connected(response.data.n_users))
+          channel.messages.value = messages
         }
       }
     )
@@ -95,6 +98,22 @@ export function MessageEditor() {
 
         break
 
+      case '/delete_channel':
+        // validate our channel
+        if (tokens.length !== 2 || !/^#[a-zA-Z0-9]+$/.test(tokens[1])) {
+          appendMessage(fragments.delete_channel_help);
+          break
+        }
+
+        action.value = {
+          type: '/delete_channel',
+          data: {
+            channel: tokens[1],
+          }
+        }
+
+        break
+
       default:  // Handle `/say`
         // you need to have some text to say something
         if (!raw_input) break
@@ -135,7 +154,7 @@ export function MessageEditor() {
       type='text'
       key='message-editor'
       value={input.value}
-      placeholder="<type here>"
+      placeholder="Type /help for help"
       onChange={onChange}
     />
   </form>

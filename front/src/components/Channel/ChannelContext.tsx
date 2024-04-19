@@ -8,7 +8,7 @@ import * as fragments from '@/fragments'
 export const ChannelContext = createContext();
 
 const channel = signal('')
-const nick = signal('asdf')
+const nick = signal('')
 const messages = signal([
   fragments.help_text,
 ])

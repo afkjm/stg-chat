@@ -20,13 +20,13 @@ class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @InjectRedis() private readonly keydb: Redis,
   ) {}
 
-  // handleConnection(client: any, ...args: any[]) {
-  //   console.log('Client connected:', client.id);
-  // }
-  //
-  // handleDisconnect(client: any) {
-  //   console.log('Client disconnected:', client.id);
-  // }
+  handleConnection(client: any, ...args: any[]) {
+    // console.log('Client connected:', client.id);
+  }
+
+  handleDisconnect(client: any) {
+    // console.log('Client disconnected:', client.id);
+  }
 
   @SubscribeMessage('/say')
   async handleSay(client: any, data: any) {
@@ -103,6 +103,9 @@ class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       })
       client.join(data.channel)
 
+      // https://stackoverflow.com/questions/18093638/socket-io-rooms-get-list-of-clients-in-specific-room
+      const n_users: number = client.server.sockets.adapter.rooms.get(data.channel).size
+
       // we pass back any existing messages
       // (configurable up to n messages via `COUNT` below)
       const messages = (await keydb.xrange(stream_name, '-', '+')).map(x => x[1])
@@ -111,9 +114,18 @@ class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         data: {
           channel: table_name,
           messages: messages,
+          n_users: n_users,
         },
       }
     }
+  }
+
+  @SubscribeMessage('/delete_channel')
+  async handleDeleteChannel(client: any, data: any) {
+    const knex = this.knex
+    const keydb = this.keydb
+    await knex.schema.dropTableIfExists(data.channel);
+    await keydb.del(`${data.channel}--stream`)
   }
 }
 
