@@ -7,7 +7,8 @@ import * as fragments from '@/fragments'
 
 export const ChannelContext = createContext();
 
-const nick = signal('asdf')
+const channel = signal('')
+const nick = signal('')
 const messages = signal([
   fragments.help_text,
 ])
@@ -16,6 +17,7 @@ export function  ChannelContextProvider({children}) {
 
   return <ChannelContext.Provider
     value={{
+      channel,
       nick,
       messages,
     }}

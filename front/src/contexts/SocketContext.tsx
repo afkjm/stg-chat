@@ -8,6 +8,7 @@ const socket = io('ws://localhost:8080', {
   transports: ['websocket'],
   path: '/back/',
 })
+
 const SocketContext = createContext();
 
 export const SocketContextProvider =
