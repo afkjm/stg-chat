@@ -5,6 +5,4 @@ RUN corepack enable
 COPY . /app
 WORKDIR /app
 RUN pnpm install
-# RUN pnpm build
-EXPOSE 4173
-CMD [ "pnpm", "run", "dev", "--host", "--port=4173"]
+CMD pnpm run dev --host --port=4173
