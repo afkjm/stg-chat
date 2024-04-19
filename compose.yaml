@@ -3,8 +3,6 @@ services:
 
   front:
     build: ./front
-    volumes:
-      - ./front:/app
 
   postgres:
     image: 'postgres:16.2'
@@ -20,8 +18,6 @@ services:
 
   back:
     build: ./back
-    volumes:
-      - ./back:/app
 
   nginx:
     image: nginx:1.25.4
