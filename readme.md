@@ -5,7 +5,7 @@
 
 
 ## Setup
- - ```git@github.com:afkjm/stg-chat.git```
+ - ```git clone git@github.com:afkjm/stg-chat.git```
  - ```cd ./stg-chat```
  - ```docker compose build```
  - ```docker compose up```
